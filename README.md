@@ -1,5 +1,4 @@
 # Node Server
----
 
 ### 0. 개발환경
 - OS: Ubuntu 22.04.02
