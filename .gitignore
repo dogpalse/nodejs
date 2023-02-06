@@ -1,0 +1,12 @@
+target/
+.settings/
+.project
+.classpath
+
+*.zip
+*.tar.gz
+/.vscode
+logs/
+
+## Node
+/node_modules
