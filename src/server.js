@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 
 // Static Files Supply Middleware
 app.use('/', express.static(path.join(__dirname, 'public')));
+console.log('__dirname: {}', __dirname)
 
 // Body-Parser Middleware
 // Form Data or AJAX Request to req.body Object
