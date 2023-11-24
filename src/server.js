@@ -107,13 +107,21 @@ app.use('/user', userRouter);
 // 일치하는 라우터가 없을 때 404 처리.
 // 없어도 express가 404 처리.
 app.use((req, res, next) => {
-    res.status(404).send('Not Found');
+    const error = new Error(`${req.method} ${req.url} 를 찾을 수 없습니다.`);
+    error.status = 404;
+    next(error);
 });
 
 // Error Middleware
 app.use((err, req, res, next) => {
     console.error('Error: ', err);
-    res.status(500).send(err.message);
+    res.status(err.status || 500);
+
+    if(err.status == 404) {
+        res.sendFile(path.join(__dirname, '/../public/pages/404.html'));
+    } else {
+        res.send('sorry.');
+    }
 })
 
 app.listen(app.get('port'), () => {
