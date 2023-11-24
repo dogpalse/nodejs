@@ -13,6 +13,8 @@ dotenv.config();
 // dotenv.config({ path: '/config/.env' })
 const app = express();
 const PORT = process.env.PORT || 8000;
+const router = require('./routes');
+const userRouter = require('./routes/user');
 
 app.set('port', PORT);
 
@@ -35,12 +37,6 @@ app.use((req, res, next) => {
     } else {
         app.use(logger('dev'));
     }
-    next();
-});
-
-// Sample Middleware
-app.use((req, res, next) => {
-    console.log('Middleware at all request');
     next();
 });
 
@@ -96,22 +92,22 @@ const uploader = multer({
     limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-app.get('/upload', (req, res) => {
-    res.sendFile(path.join(__dirname, '/../public/multipart.html'));
-});
+app.use('/', router);
+app.use('/user', userRouter);
 
-app.post('/upload', uploader.fields([{ name: 'file1' }, { name: 'file2' }]), (req, res) => {
-    console.log('files: ', req.files, ', body: ', req.body);
-    res.send('success..!');
-});
+// app.get('/upload', (req, res) => {
+//     res.sendFile(path.join(__dirname, '/../public/multipart.html'));
+// });
 
-app.get('/', (req, res, next) => {
-    // res.send('Welcome Node Server...!');
-    console.log('Middleware at GET "/" requset');
-    res.sendFile(path.join(__dirname, '/../public/index.html'));
-//     next();
-// }, (res, req) => {
-//     throw new Error("Happen Error...!");
+// app.post('/upload', uploader.fields([{ name: 'file1' }, { name: 'file2' }]), (req, res) => {
+//     console.log('files: ', req.files, ', body: ', req.body);
+//     res.send('success..!');
+// });
+
+// 일치하는 라우터가 없을 때 404 처리.
+// 없어도 express가 404 처리.
+app.use((req, res, next) => {
+    res.status(404).send('Not Found');
 });
 
 // Error Middleware
