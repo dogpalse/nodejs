@@ -8,6 +8,7 @@ target/
 /.vscode
 logs/
 tmp/
+uploads/
 
 ## Node
 /node_modules
