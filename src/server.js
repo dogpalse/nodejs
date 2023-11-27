@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
 const fs = require('fs');
+const { sequelize } = require('../models');
 
 // dotenv : .env 파일을 읽어 process.env 생성
 dotenv.config();
@@ -17,6 +18,14 @@ const router = require('./routes');
 const userRouter = require('./routes/user');
 
 app.set('port', PORT);
+
+// DB 연결
+sequelize.sync({ force: false })
+    .then(() => {
+        console.log('DB Connection...!');
+    }).catch(err => {
+        console.error(err);
+    });
 
 // ************* Logger Middleware 적용 ************* 
 // [HTTP Method] [URL] [HTTP Status] [Response Rate] - [Response Byte]
