@@ -1,16 +1,20 @@
 const express = require('express');
+const { getUsers, getUserById, insertUser, updateUser, deleteUser } = require('./../controller/user.ctrl');
+
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.send('hello user router');
-});
+// router.get('/', (req, res) => {
+//   res.send('hello user router');
+// });
 
-router.get('/:id', (req, res) => {
-  console.log('params: ', req.params);
-  console.log('query: ', req.query);
+router.route('/')
+  .get(getUsers)
+  .post(insertUser);
 
-  res.status(200).cookie('name', 'test').json({ name: 'song' });
-});
+router.route('/:id')
+  .get(getUserById)
+  .post(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;
